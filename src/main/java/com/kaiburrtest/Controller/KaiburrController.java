@@ -57,6 +57,7 @@ public class KaiburrController extends Exception {
         if (data.isPresent()) {
             return new ResponseEntity<>(data.get(), HttpStatus.OK);
         } else {
+            logger.error("HTTP status 404 , no objects found.");
             return new ResponseEntity("Status 404 , No Objects found with that id", HttpStatus.NOT_FOUND);
         }
     }
@@ -67,10 +68,11 @@ public class KaiburrController extends Exception {
     @GetMapping("/get/{name}")
     @Query("{field: ObjectId('?0'}")
     public @ResponseBody List<KaiburrModel> findByName(@PathVariable("name") String name) {
-        logger.info("HTTP requestto search the lists present with the same server name requested ");
+        logger.info("HTTP request to search the lists present with the same server name requested ");
         try {
             return kaiburrRepository.findByName(name);
         } catch (Exception e) {
+            logger.error("HTTP status 404 , no objects found.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "HTTP status 404 no objects found\n");
         }
 
